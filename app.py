@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 import google.generativeai as ggi
 
 load_dotenv(".env")
-fetched_api_key = os.getenv("API_Key")
+fetched_api_key = os.getenv("API_KEY")
 ggi.configure(api_key=fetched_api_key)
 llm_model = ggi.GenerativeModel("gemini-pro")
 
@@ -89,7 +89,7 @@ def main():
     numerical_features = np.array([annual_income, children_count, fam_count, own_phone, own_email, days_difference]).reshape(1,-1)
 
 
-    processed_categories = np.array([labeled_categories, numerical_features], axis=1).reshape(1, -1)
+    processed_categories = np.concatenate([labeled_categories, numerical_features], axis=1).reshape(1, -1)
     scaled_features = scaler.transform(processed_categories)
 
     prediction = model.predict_proba(scaled_features)
