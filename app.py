@@ -89,12 +89,13 @@ def main():
     numerical_features = np.array([annual_income, children_count, fam_count, own_phone, own_email, days_difference]).reshape(1,-1)
 
 
-    processed_categories = np.concatenate([labeled_categories, numerical_features], axis=1)
+    processed_categories = np.array([labeled_categories, numerical_features], axis=1).reshape(1, -1)
     scaled_features = scaler.transform(processed_categories)
 
     prediction = model.predict_proba(scaled_features)
     approved_prob = np.round((prediction[:, 1] * 100), 2)[0]
-    response = llm_model.generate_content([f"A model predicted that the probability for my credit card approval is {approved_prob}%, give me recommendations on how to improve it"], stream=True)
+
+    response = llm_model.generate_content(["A model predicted that the probability for my credit card approval is {approved_prob}%, give me recommendations on how to improve it"], stream=True)
     response.resolve()
 
     output = f"The probability that your credit card will be approved is {approved_prob}%"
