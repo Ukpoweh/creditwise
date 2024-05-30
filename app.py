@@ -8,6 +8,14 @@ import pickle
 
 from datetime import datetime
 import time
+import os
+from dotenv import load_dotenv
+import google.generativeai as ggi
+
+load_dotenv(".env")
+fetched_api_key = os.getenv("API_Key")
+ggi.configure(api_key=fetched_api_key)
+llm_model = ggi.GenerativeModel("gemini-pro")
 
 
 model = pickle.load(open('model.pkl', 'rb'))
@@ -86,8 +94,16 @@ def main():
 
     prediction = model.predict_proba(scaled_features)
     approved_prob = np.round((prediction[:, 1] * 100), 2)[0]
+    response = llm_model.generate_content([f"A model predicted that the probability for my credit card approval is {approved_prob}%, give me recommendations on how to improve it"], stream=True)
+    response.resolve()
+
+    output = f"The probability that your credit card will be approved is {approved_prob}%"
+
     if st.button('Predict your credit card approval probability'):
-        st.success(f"The probability that your credit card will be approved is {approved_prob}%")
+        st.success(output)
+    
+    if st.button("Generate recommendation"):
+        st.markdown(response.text)
 
 if __name__ == "__main__":
     main()
