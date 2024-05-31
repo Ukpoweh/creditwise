@@ -17,7 +17,7 @@ st.set_page_config(page_title="CreditWise", page_icon=":credit_card:")
 
 
 load_dotenv(".env")
-fetched_api_key = os.getenv("API_KEY")
+fetched_api_key = st.secrets["API_KEY"]
 ggi.configure(api_key=fetched_api_key)
 llm_model = ggi.GenerativeModel("gemini-pro")
 
