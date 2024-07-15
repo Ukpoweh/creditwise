@@ -17,7 +17,7 @@ CreditWise is a machine learning-based system designed to predict the likelihood
 - **Real-Time Feedback:** Continuously monitors and updates the model based on user interactions and feedback.
 
 ## Usage
-Try CreditWise [here]()
+Try CreditWise [here](https://creditwise.streamlit.app/)
 
 ## Contributing
 
